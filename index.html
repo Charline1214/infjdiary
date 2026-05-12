@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#faf5eb">
+<title>INFJ的精神手帳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Caveat:wght@400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --green-dark:#1e4d2b;--green-mid:#3a7a52;--green-light:#6ba37e;
+  --green-pale:#a8ccb5;--green-ghost:#e2efe6;
+  --cream:#faf5eb;--paper:#f7f1e3;--paper-margin:#c8d5cd;
+  --ink:#1e4d2b;--ink-light:#4a7a5c;--ink-faint:#8fb09a;
+  --shadow:rgba(30,77,43,.08);--shadow-md:rgba(30,77,43,.12);
+  --font-cn:'Noto Serif SC','ZCOOL XiaoWei','Songti SC',serif;
+  --font-hand:'Caveat',cursive;
+  --font-num:'Noto Serif SC','Georgia',serif;
+  --radius:12px;--radius-sm:8px;
+  --transition:.3s cubic-bezier(.4,0,.2,1);
+  --nav-h:56px;
+}
+html{font-size:16px;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font-cn);background:var(--cream);color:var(--ink);font-weight:400;min-height:100vh;overflow-x:hidden;padding-bottom:calc(var(--nav-h) + 16px)}
+.num{font-family:var(--font-num);font-variant-numeric:tabular-nums}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--green-pale);border-radius:4px}
+
+/* ===== TITLE BAR (sticky top) ===== */
+.title-bar{position:sticky;top:0;z-index:100;background:rgba(250,245,235,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:14px 16px 10px;border-bottom:1px solid var(--green-ghost);text-align:center}
+.title-row{display:flex;align-items:center;justify-content:center;gap:10px;position:relative}
+.title-main{font-family:var(--font-cn);font-size:1.45rem;font-weight:900;color:var(--green-dark);letter-spacing:3px}
+.title-sub{display:block;font-family:var(--font-hand);font-size:.88rem;color:var(--ink-light);font-weight:500;letter-spacing:1px;margin-top:2px}
+.title-leaf{position:absolute;color:var(--green-mid);opacity:.7}
+.title-leaf-l1{left:6%;top:-2px;transform:rotate(-25deg)}
+.title-leaf-l2{left:14%;top:6px;transform:rotate(15deg)}
+.title-leaf-r1{right:6%;top:-4px;transform:rotate(20deg)}
+.title-leaf-r2{right:14%;top:4px;transform:rotate(-30deg)}
+.title-leaf-r3{right:2%;top:8px;transform:rotate(40deg)}
+.save-btn{display:flex;align-items:center;gap:4px;background:var(--green-dark);color:#fff;border:none;padding:7px 16px;border-radius:20px;font-family:var(--font-cn);font-size:.82rem;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:0 2px 8px var(--shadow);margin-top:8px}
+.save-btn:active{transform:scale(.95)}.save-btn.saved{background:var(--green-light)}
+
+/* ===== DAILY FIXED (above date) ===== */
+.daily-fixed-bar{max-width:480px;margin:10px auto 0;padding:0 16px}
+.daily-fixed-card{background:var(--paper);border-radius:var(--radius);box-shadow:0 1px 4px var(--shadow);padding:10px 14px;position:relative}
+.daily-fixed-card::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:1.5px;background:var(--paper-margin);opacity:.5}
+.daily-fixed-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-left:28px}
+.daily-fixed-header svg{width:20px;height:20px;flex-shrink:0;color:var(--green-mid)}
+.daily-fixed-header span{font-family:var(--font-cn);font-size:.88rem;font-weight:700;color:var(--green-dark);letter-spacing:1px}
+
+/* ===== DATE NAV ===== */
+.date-header{position:sticky;top:88px;z-index:99;background:rgba(250,245,235,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:8px 16px 6px;border-bottom:1px solid var(--green-ghost)}
+.date-nav{display:flex;align-items:center;justify-content:center;gap:14px}
+.date-nav button{background:none;border:2px solid var(--green-pale);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);color:var(--green-mid)}
+.date-nav button:active{background:var(--green-ghost);transform:scale(.9)}
+.date-display{text-align:center;min-width:160px}
+.date-display .date-main{font-family:var(--font-cn);font-size:1.1rem;font-weight:700;color:var(--green-dark)}
+.date-display .date-sub{font-size:.72rem;color:var(--ink-light);font-weight:500;margin-top:1px}
+.week-calendar{display:flex;gap:4px;padding:6px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.week-day{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 9px;border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);min-width:42px;border:1.5px solid transparent}
+.week-day:active{transform:scale(.92)}
+.week-day.active{border-color:var(--green-mid);background:var(--green-ghost)}
+.week-day.has-data::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--green-mid)}
+.week-day .wd-label{font-size:.62rem;color:var(--ink-light);font-weight:400}
+.week-day .wd-num{font-family:var(--font-num);font-variant-numeric:tabular-nums;font-size:1.05rem;font-weight:700;color:var(--ink)}
+.week-day.active .wd-num{color:var(--green-dark)}
+
+/* ===== MAIN ===== */
+.main-content{max-width:480px;margin:0 auto;padding:12px 16px}
+
+/* ===== WEEKLY PLAN BAR ===== */
+.weekly-plan-bar{margin-bottom:12px}
+.weekly-plan-card{background:var(--paper);border-radius:var(--radius);margin-bottom:10px;box-shadow:0 1px 4px var(--shadow);padding:12px 14px;position:relative}
+.weekly-plan-card::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:1.5px;background:var(--paper-margin);opacity:.5}
+.weekly-plan-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-left:28px}
+.weekly-plan-header svg{width:22px;height:22px;flex-shrink:0;color:var(--green-mid)}
+.weekly-plan-header span{font-family:var(--font-cn);font-size:.95rem;font-weight:700;color:var(--green-dark);letter-spacing:1px}
+
+/* ===== SECTION CARD ===== */
+.section-card{background:var(--paper);border-radius:var(--radius);margin-bottom:14px;box-shadow:0 1px 4px var(--shadow);overflow:hidden;transition:var(--transition);position:relative;animation:fadeIn .4s ease}
+.section-card::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:1.5px;background:var(--paper-margin);opacity:.5}
+.section-header{display:flex;align-items:center;gap:10px;padding:12px 14px 8px 40px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.section-icon{width:26px;height:26px;flex-shrink:0;color:var(--green-mid)}
+.section-title{font-family:var(--font-cn);font-size:1rem;font-weight:700;color:var(--green-dark);flex:1;letter-spacing:1px}
+.section-toggle{width:18px;height:18px;color:var(--ink-faint);transition:transform .3s ease}
+.section-card.collapsed .section-toggle{transform:rotate(-90deg)}
+.section-body{padding:0 14px 14px 40px;overflow:hidden;transition:max-height .4s ease,opacity .3s ease,padding .3s ease;max-height:1200px;opacity:1}
+.section-card.collapsed .section-body{max-height:0;opacity:0;padding-top:0;padding-bottom:0}
+
+/* ===== FORM ELEMENTS ===== */
+.form-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.form-label{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--ink-light);font-weight:400;min-width:70px;flex-shrink:0}
+.form-label svg{width:16px;height:16px;flex-shrink:0}
+.form-input{flex:1;border:none;border-bottom:1.5px dashed var(--green-pale);background:transparent;padding:6px 4px;font-family:var(--font-cn);font-size:.88rem;font-weight:400;color:var(--ink);outline:none;transition:var(--transition)}
+.form-input:focus{border-bottom-color:var(--green-mid);background:var(--green-ghost);border-radius:4px 4px 0 0}
+.form-input::placeholder{color:var(--ink-faint);font-style:italic;font-weight:400}
+.section-note{margin-top:8px}
+.section-note textarea{width:100%;border:none;border-bottom:1.5px dashed var(--green-pale);background:transparent;padding:5px 4px;font-family:var(--font-cn);font-size:.82rem;font-weight:400;color:var(--ink);outline:none;resize:none;line-height:1.5;min-height:32px;transition:var(--transition)}
+.section-note textarea:focus{border-bottom-color:var(--green-mid);background:var(--green-ghost);border-radius:4px 4px 0 0}
+.section-note textarea::placeholder{color:var(--ink-faint);font-style:italic;font-weight:400}
+.inline-action{display:flex;justify-content:flex-end;margin-top:6px}
+.inline-action-btn{display:flex;align-items:center;gap:4px;background:var(--green-ghost);color:var(--green-mid);border:1.5px solid var(--green-pale);border-radius:16px;padding:4px 12px;font-family:var(--font-cn);font-size:.72rem;font-weight:400;cursor:pointer;transition:var(--transition)}
+.inline-action-btn svg{width:12px;height:12px}
+.inline-action-btn:active{background:var(--green-pale);transform:scale(.95)}
+
+/* ===== DREAM AREA ===== */
+.dream-area{margin-top:10px;padding-top:10px;border-top:1.5px dashed var(--green-pale)}
+
+/* ===== TODO / LIST STYLES (shared) ===== */
+.list-input-row{display:flex;gap:8px;margin-bottom:8px}
+.list-input-row input{flex:1;border:none;border-bottom:1.5px dashed var(--green-pale);background:transparent;padding:8px 4px;font-family:var(--font-cn);font-size:.88rem;font-weight:400;color:var(--ink);outline:none;transition:var(--transition)}
+.list-input-row input:focus{border-bottom-color:var(--green-mid);background:var(--green-ghost);border-radius:4px 4px 0 0}
+.list-input-row input::placeholder{color:var(--ink-faint);font-style:italic;font-weight:400}
+.list-add-btn{width:36px;height:36px;border-radius:4px;border:1.5px solid var(--green-mid);background:var(--green-mid);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0}
+.list-add-btn:active{background:var(--green-dark);border-color:var(--green-dark);transform:scale(.95)}
+.item-list{list-style:none}
+.item-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed var(--green-ghost);animation:slideIn .3s ease}
+.item-item:last-child{border-bottom:none}
+.item-text{flex:1;font-size:.88rem;color:var(--ink);line-height:1.4}
+.item-delete{width:22px;height:22px;border:none;background:none;color:var(--ink-faint);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);flex-shrink:0}
+.item-delete:active{color:var(--green-dark);transform:scale(.9)}
+.empty-hint{text-align:center;color:var(--ink-faint);font-size:.78rem;font-style:italic;padding:10px 0;display:none}
+
+/* ===== MOOD ===== */
+.mood-selector{display:flex;justify-content:space-around;padding:10px 0}
+.mood-option{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:var(--transition);padding:6px;border-radius:var(--radius-sm);border:2px solid transparent}
+.mood-option svg{width:42px;height:42px;color:var(--green-mid)}
+.mood-option:active{transform:scale(.9)}
+.mood-option.selected{border-color:var(--green-mid);background:var(--green-ghost)}
+.mood-option.selected svg{color:var(--green-dark)}
+.mood-label{font-size:.7rem;color:var(--ink-light);font-weight:400}
+
+/* ===== READ STATUS ===== */
+.read-status-selector{display:flex;justify-content:space-around;padding:8px 0}
+.read-status-option{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:var(--transition);padding:6px;border-radius:var(--radius-sm);border:2px solid transparent}
+.read-status-option svg{width:40px;height:40px;color:var(--green-mid)}
+.read-status-option:active{transform:scale(.9)}
+.read-status-option.selected{border-color:var(--green-mid);background:var(--green-ghost)}
+.read-status-option.selected svg{color:var(--green-dark)}
+.read-status-label{font-size:.68rem;color:var(--ink-light);font-weight:400}
+
+/* ===== SLIDER ===== */
+.duration-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:var(--green-ghost);border-radius:3px;outline:none}
+.duration-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;background:var(--green-mid);border-radius:50%;cursor:pointer;transition:var(--transition)}
+.duration-slider::-webkit-slider-thumb:active{background:var(--green-dark);transform:scale(1.1)}
+.duration-slider::-moz-range-thumb{width:18px;height:18px;background:var(--green-mid);border-radius:50%;cursor:pointer;border:none}
+
+/* ===== TIME PICKER ===== */
+.time-picker input[type="time"]{border:none;border-bottom:1.5px dashed var(--green-pale);background:transparent;padding:4px 8px;font-family:var(--font-num);font-size:.95rem;font-weight:400;color:var(--ink);outline:none}
+
+/* ===== CUSTOM SECTIONS ===== */
+.custom-section-card{background:var(--cream);border-radius:var(--radius-sm);padding:10px;margin-bottom:10px;border:1.5px dashed var(--green-pale)}
+.custom-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cn-input{flex:1;border:none;border-bottom:1.5px dashed var(--green-pale);background:transparent;padding:5px 4px;font-family:var(--font-cn);font-size:.9rem;font-weight:700;color:var(--green-dark);outline:none}
+.cn-input:focus{border-bottom-color:var(--green-mid);background:var(--green-ghost);border-radius:4px 4px 0 0}
+.cn-input::placeholder{color:var(--ink-faint);font-style:italic;font-weight:400}
+.custom-delete-btn{width:24px;height:24px;border:none;background:none;color:var(--ink-faint);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.custom-delete-btn:active{color:var(--green-dark)}
+.add-custom-btn{width:100%;padding:12px;border:2px dashed var(--green-pale);background:transparent;color:var(--green-mid);border-radius:var(--radius);font-family:var(--font-cn);font-size:.85rem;font-weight:400;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:var(--transition);margin-top:10px}
+.add-custom-btn:active{background:var(--green-ghost)}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(250,245,235,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--green-ghost);display:flex;justify-content:space-around;align-items:center;padding-bottom:env(safe-area-inset-bottom);z-index:1000}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);border:none;background:transparent;color:var(--ink-faint)}
+.nav-item svg{width:22px;height:22px}
+.nav-item span{font-size:.65rem;font-weight:600}
+.nav-item.active{color:var(--green-dark);background:var(--green-ghost)}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(30,77,43,.25);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s ease;display:flex;align-items:flex-end;justify-content:center}
+.modal-overlay.active{opacity:1;pointer-events:auto}
+.modal-content{background:var(--paper);width:100%;max-width:480px;max-height:85vh;border-radius:var(--radius) var(--radius) 0 0;padding:16px;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.modal-overlay.active .modal-content{transform:translateY(0)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1.5px dashed var(--green-pale)}
+.modal-title{font-family:var(--font-cn);font-size:1.1rem;font-weight:700;color:var(--green-dark)}
+.modal-close{width:32px;height:32px;border:none;background:var(--green-ghost);color:var(--green-mid);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-close:active{background:var(--green-pale)}
+
+/* ===== DRAWER TABS ===== */
+.drawer-tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.drawer-tab{flex-shrink:0;padding:6px 12px;border:1.5px solid var(--green-pale);background:transparent;color:var(--green-mid);border-radius:16px;font-family:var(--font-cn);font-size:.75rem;font-weight:400;cursor:pointer;transition:var(--transition)}
+.drawer-tab.active{background:var(--green-mid);color:#fff;border-color:var(--green-mid)}
+.drawer-tab:active{transform:scale(.95)}
+.drawer-content{max-height:50vh;overflow-y:auto}
+.drawer-empty{text-align:center;color:var(--ink-faint);font-size:.85rem;padding:20px 0;font-style:italic}
+.drawer-item{padding:10px 0;border-bottom:1px dashed var(--green-ghost)}
+.drawer-item:last-child{border-bottom:none}
+.drawer-item-date{font-size:.72rem;color:var(--ink-faint);margin-bottom:3px}
+.drawer-item-text{font-size:.85rem;color:var(--ink);line-height:1.4}
+.drawer-item-actions{display:flex;gap:8px;margin-top:6px;justify-content:flex-end}
+.drawer-item-actions button{padding:3px 10px;border:1px solid var(--green-pale);background:transparent;color:var(--green-mid);border-radius:12px;font-size:.7rem;cursor:pointer}
+.drawer-item-actions button:active{background:var(--green-ghost)}
+
+/* ===== STATS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.stat-card{background:var(--cream);border-radius:var(--radius-sm);padding:12px;text-align:center;border:1.5px dashed var(--green-pale)}
+.stat-value{font-family:var(--font-num);font-size:1.6rem;font-weight:700;color:var(--green-dark)}
+.stat-label{font-size:.75rem;color:var(--ink-light);margin-top:2px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--green-dark);color:#fff;padding:10px 20px;border-radius:24px;font-size:.85rem;opacity:0;pointer-events:none;transition:all .3s ease;z-index:3000;box-shadow:0 4px 16px rgba(30,77,43,.25)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes checkmark{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes sway{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(-20deg)}}
+.title-leaf-l1{animation:sway 4s ease-in-out infinite}
+@keyframes sway2{0%,100%{transform:rotate(15deg)}50%{transform:rotate(20deg)}}
+.title-leaf-l2{animation:sway2 5s ease-in-out infinite}
+@keyframes sway3{0%,100%{transform:rotate(20deg)}50%{transform:rotate(25deg)}}
+.title-leaf-r1{animation:sway3 4.5s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<!-- ===== TITLE BAR (sticky top) ===== -->
+<div class="title-bar">
+  <div class="title-row">
+    <svg class="title-leaf title-leaf-l1" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    <svg class="title-leaf title-leaf-l2" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    <div>
+      <div class="title-main">INFJ的精神手帳</div>
+      <div class="title-sub">INFJ's Utopia</div>
+    </div>
+    <svg class="title-leaf title-leaf-r1" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    <svg class="title-leaf title-leaf-r2" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    <svg class="title-leaf title-leaf-r3" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:0 4px">
+    <button class="save-btn" id="saveBtn" onclick="saveDiary()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      保存
+    </button>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="save-btn" id="registerBtn" onclick="showRegisterModal()" style="background:var(--green-mid)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        注册
+      </button>
+      <button class="save-btn" id="loginBtn" onclick="showLoginModal()" style="background:var(--green-light)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        登录
+      </button>
+      <span id="userDisplay" style="font-family:var(--font-cn);font-size:.85rem;color:var(--green-dark);font-weight:400;background:var(--green-ghost);padding:4px 12px;border-radius:16px;display:none"></span>
+      <button id="logoutBtn" onclick="logout()" style="display:none;background:none;border:none;color:var(--ink-light);font-size:.65rem;cursor:pointer;padding:2px 4px">登出</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DAILY FIXED (above date, persistent) ===== -->
+<div class="daily-fixed-bar">
+  <div class="daily-fixed-card">
+    <div class="daily-fixed-header">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24h40" stroke-dasharray="3 2"/><path d="M24 4v40" stroke-dasharray="3 2"/><circle cx="24" cy="24" r="16" stroke-dasharray="4 2"/><path d="M24 12v12l8 4" stroke-dasharray="2 2"/></svg>
+      <span>每日固定必做事项</span>
+    </div>
+    <div class="list-input-row" style="padding-left:28px">
+      <input type="text" id="dailyFixedInput" placeholder="添加每日固定事项..." onkeydown="if(event.key==='Enter')addDailyFixed()">
+      <button class="list-add-btn" onclick="addDailyFixed()">+</button>
+    </div>
+    <ul class="item-list" id="dailyFixedList"></ul>
+    <div class="empty-hint" id="dailyFixedEmpty">暂无固定事项</div>
+  </div>
+</div>
+
+<!-- ===== DATE HEADER (sticky below title) ===== -->
+<div class="date-header">
+  <div class="date-nav">
+    <button onclick="changeDate(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div class="date-display">
+      <div class="date-main num" id="dateMain"></div>
+      <div class="date-sub" id="dateSub"></div>
+    </div>
+    <button onclick="changeDate(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+  </div>
+  <div class="week-calendar" id="weekCalendar"></div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main class="main-content">
+
+  <!-- WEEKLY PLAN (per-week, shared across days) -->
+  <div class="weekly-plan-bar">
+    <div class="weekly-plan-card">
+      <div class="weekly-plan-header">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="40" height="32" rx="4" stroke-dasharray="4 2"/><line x1="4" y1="16" x2="44" y2="16" stroke-dasharray="3 2"/><line x1="16" y1="4" x2="16" y2="12" stroke-dasharray="2 2"/><line x1="32" y1="4" x2="32" y2="12" stroke-dasharray="2 2"/><path d="M12 24h8" stroke-dasharray="2 2"/><path d="M12 30h12" stroke-dasharray="2 2"/><path d="M28 24h8" stroke-dasharray="2 2"/></svg>
+        <span>本周计划</span>
+      </div>
+      <div class="list-input-row" style="padding-left:28px">
+        <input type="text" id="weeklyPlanInput" placeholder="添加本周计划..." onkeydown="if(event.key==='Enter')addWeeklyPlanItem()">
+        <button class="list-add-btn" onclick="addWeeklyPlanItem()">+</button>
+      </div>
+      <ul class="item-list" id="weeklyPlanList"></ul>
+      <div class="empty-hint" id="weeklyPlanEmpty">暂无本周计划</div>
+      <div class="weekly-plan-actions" style="padding-left:28px;margin-top:8px;display:flex;gap:8px">
+        <button class="inline-action-btn" onclick="carryWeeklyPlanToNextWeek()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          延续到下周
+        </button>
+        <button class="inline-action-btn" onclick="saveWeeklyPlanToHistory()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          放入历史计划
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. 入睡/起床时间 + 梦境记录 -->
+  <div class="section-card" id="sectionSleep">
+    <div class="section-header" onclick="toggleSection('sectionSleep')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M24 4C13 4 4 13 4 24s9 20 20 20c4 0 7-1 10-3C28 38 22 32 22 24s6-14 12-17c-3-2-6-3-10-3z" stroke-dasharray="3 2"/>
+        <circle cx="36" cy="12" r="1.5" fill="currentColor"/><circle cx="40" cy="18" r="1" fill="currentColor"/><circle cx="42" cy="10" r=".8" fill="currentColor"/>
+      </svg>
+      <span class="section-title">入睡 / 起床时间</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-row">
+        <span class="form-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" stroke-dasharray="3 2"/></svg>入睡</span>
+        <div class="time-picker"><input type="time" class="num" id="sleepTime" onchange="autoCalcSleep()"></div>
+      </div>
+      <div class="form-row">
+        <span class="form-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5" stroke-dasharray="3 2"/><line x1="12" y1="1" x2="12" y2="3" stroke-dasharray="2 2"/><line x1="12" y1="21" x2="12" y2="23" stroke-dasharray="2 2"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-dasharray="2 2"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-dasharray="2 2"/></svg>起床</span>
+        <div class="time-picker"><input type="time" class="num" id="wakeTime" onchange="autoCalcSleep()"></div>
+      </div>
+      <div class="form-row">
+        <span class="form-label">睡眠时长</span>
+        <span class="num" id="sleepDuration" style="font-size:.95rem;color:var(--green-dark);font-weight:700">--</span>
+      </div>
+      <div class="section-note"><textarea id="sleepNote" placeholder="今日睡眠感受..." rows="1"></textarea></div>
+      <div class="dream-area">
+        <div class="form-label" style="margin-bottom:6px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:15px;height:15px"><circle cx="12" cy="12" r="10" stroke-dasharray="3 2"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke-dasharray="2 2"/><circle cx="9" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/></svg>
+          梦境记录
+        </div>
+        <textarea class="form-input" id="dreamText" placeholder="记录今夜的梦..." rows="3"></textarea>
+        <div class="form-row" style="margin-top:6px">
+          <span class="form-label">梦的类型</span>
+          <select class="form-input" id="dreamType" style="border-bottom-style:solid;border-bottom-color:var(--green-pale)">
+            <option value="">未分类</option>
+            <option value="good">美梦</option>
+            <option value="bad">噩梦</option>
+            <option value="weird">怪梦</option>
+            <option value="lucid">清醒梦</option>
+            <option value="recurring">重复梦</option>
+          </select>
+        </div>
+        <div class="inline-action">
+          <button class="inline-action-btn" onclick="addToDreamDrawer()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            加入梦境抽屉
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 今日体重 -->
+  <div class="section-card" id="sectionWeight">
+    <div class="section-header" onclick="toggleSection('sectionWeight')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="24" y1="4" x2="24" y2="40" stroke-dasharray="3 2"/><path d="M18 10l6-6 6 6" stroke-dasharray="2 2"/><path d="M18 38l6 6 6-6" stroke-dasharray="2 2"/><line x1="16" y1="18" x2="32" y2="18" stroke-dasharray="3 2"/><line x1="16" y1="26" x2="32" y2="26" stroke-dasharray="3 2"/></svg>
+      <span class="section-title">今日体重</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-row">
+        <input type="number" class="form-input num" id="weight" placeholder="输入体重" step="0.1" min="20" max="300" style="max-width:130px">
+        <span style="font-family:var(--font-num);color:var(--ink-light);font-size:.88rem">kg</span>
+      </div>
+      <div class="section-note"><textarea id="weightNote" placeholder="身体状态备注..." rows="1"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 3. 今日必做事项 -->
+  <div class="section-card" id="sectionTodo">
+    <div class="section-header" onclick="toggleSection('sectionTodo')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="32" height="36" rx="3" stroke-dasharray="4 2"/><path d="M16 16h16" stroke-dasharray="3 2"/><path d="M16 24h12" stroke-dasharray="3 2"/><path d="M16 32h8" stroke-dasharray="3 2"/><path d="M32 28l3 3 5-6" stroke-dasharray="2 2"/></svg>
+      <span class="section-title">今日必做事项</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="list-input-row">
+        <input type="text" id="todoInput" placeholder="添加新事项..." onkeydown="if(event.key==='Enter')addTodo()">
+        <button class="list-add-btn" onclick="addTodo()">+</button>
+      </div>
+      <ul class="item-list" id="todoList"></ul>
+      <div class="empty-hint" id="todoEmpty">暂无待办事项</div>
+    </div>
+  </div>
+
+  <!-- 4. 今日头脑风暴 + 新增计划 (合并) -->
+  <div class="section-card" id="sectionThink">
+    <div class="section-header" onclick="toggleSection('sectionThink')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="20" r="10" stroke-dasharray="4 2"/><circle cx="14" cy="36" r="6" stroke-dasharray="3 2"/><circle cx="36" cy="34" r="5" stroke-dasharray="3 2"/><line x1="18" y1="27" x2="16" y2="31" stroke-dasharray="2 2"/><line x1="30" y1="27" x2="33" y2="30" stroke-dasharray="2 2"/><circle cx="24" cy="20" r="2" fill="currentColor" stroke="none"/></svg>
+      <span class="section-title">头脑风暴 / 新增计划</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-label" style="margin-bottom:4px">头脑风暴</div>
+      <div class="list-input-row">
+        <input type="text" id="brainstormInput" placeholder="记录脑海中闪过的灵感、想法、创意..." onkeydown="if(event.key==='Enter')addBrainstorm()">
+        <button class="list-add-btn" onclick="addBrainstorm()">+</button>
+      </div>
+      <ul class="item-list" id="brainstormList"></ul>
+      <div class="empty-hint" id="brainstormEmpty">暂无头脑风暴记录</div>
+      <div class="inline-action">
+        <button class="inline-action-btn" onclick="addToInspirationBox()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          加入灵感盒子
+        </button>
+      </div>
+      <div class="section-note"><textarea id="brainstormNote" placeholder="一句话总结今天的灵感..." rows="1"></textarea></div>
+      <div style="margin-top:12px"></div>
+      <div class="form-label" style="margin-bottom:4px">新增计划</div>
+      <div class="list-input-row">
+        <input type="text" id="newPlanInput" placeholder="今天萌生了什么新计划？..." onkeydown="if(event.key==='Enter')addNewPlan()">
+        <button class="list-add-btn" onclick="addNewPlan()">+</button>
+      </div>
+      <ul class="item-list" id="newPlanList"></ul>
+      <div class="empty-hint" id="newPlanEmpty">暂无新增计划</div>
+      <div class="form-row" style="margin-top:6px">
+        <span class="form-label">优先级</span>
+        <select class="form-input" id="planPriority" style="border-bottom-style:solid;border-bottom-color:var(--green-pale)">
+          <option value="">未设定</option>
+          <option value="high">紧急重要</option>
+          <option value="medium">重要不紧急</option>
+          <option value="low">有空再做</option>
+        </select>
+      </div>
+      <div class="inline-action">
+        <button class="inline-action-btn" onclick="addToPlanSticky()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M14 10l6.1-6.1M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg>
+          加入计划便箴
+        </button>
+      </div>
+      <div class="section-note"><textarea id="planNote" placeholder="计划的执行思路..." rows="1"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 5. 今日心情 (simplified, no period tabs) -->
+  <div class="section-card" id="sectionMood">
+    <div class="section-header" onclick="toggleSection('sectionMood')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18" stroke-dasharray="4 2"/><path d="M14 20c2-3 5-3 7 0" stroke-dasharray="2 2"/><path d="M27 20c2-3 5-3 7 0" stroke-dasharray="2 2"/><path d="M16 30c2 3 5 4 8 4s6-1 8-4" stroke-dasharray="2 2"/></svg>
+      <span class="section-title">今日心情</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="mood-selector" id="moodSelector">
+        <div class="mood-option" data-mood="great" onclick="selectMood(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M18 26c3-5 7-5 10 0"/><path d="M36 26c3-5 7-5 10 0"/><path d="M20 40c3 5 7 6 12 6s9-1 12-6"/><circle cx="50" cy="14" r="2" fill="currentColor" stroke="none"/><path d="M52 8l3 3" stroke-dasharray="2 2"/></svg>
+          <span class="mood-label">超棒</span>
+        </div>
+        <div class="mood-option" data-mood="good" onclick="selectMood(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M18 28c3-4 7-4 10 0"/><path d="M36 28c3-4 7-4 10 0"/><path d="M22 40c3 4 6 5 10 5s7-1 10-5"/></svg>
+          <span class="mood-label">不错</span>
+        </div>
+        <div class="mood-option" data-mood="okay" onclick="selectMood(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M18 28c3-4 7-4 10 0"/><path d="M36 28c3-4 7-4 10 0"/><line x1="22" y1="40" x2="42" y2="40" stroke-dasharray="3 2"/></svg>
+          <span class="mood-label">一般</span>
+        </div>
+        <div class="mood-option" data-mood="low" onclick="selectMood(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M18 30c3-4 7-4 10 0"/><path d="M36 30c3-4 7-4 10 0"/><path d="M22 44c3-4 6-5 10-5s7 1 10 5"/></svg>
+          <span class="mood-label">低落</span>
+        </div>
+        <div class="mood-option" data-mood="bad" onclick="selectMood(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M18 32c3-4 7-4 10 0"/><path d="M36 32c3-4 7-4 10 0"/><path d="M22 42c3-5 6-6 10-6s7 1 10 6"/></svg>
+          <span class="mood-label">糟糕</span>
+        </div>
+      </div>
+      <div class="section-note"><textarea id="moodNote" placeholder="多巴胺内存情况..." rows="1"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 6. 今日阅读 -->
+  <div class="section-card" id="sectionRead">
+    <div class="section-header" onclick="toggleSection('sectionRead')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h32v36H8z" stroke-dasharray="4 2"/><path d="M12 10h24" stroke-dasharray="3 2"/><path d="M12 16h20" stroke-dasharray="3 2"/><path d="M12 22h16" stroke-dasharray="3 2"/><circle cx="36" cy="34" r="2" fill="currentColor" stroke="none"/></svg>
+      <span class="section-title">今日阅读</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-row"><input type="text" class="form-input" id="bookTitle" placeholder="书名" style="flex:1"></div>
+      <div class="inline-action">
+        <button class="inline-action-btn" onclick="addToBookList()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          加入已阅书单
+        </button>
+      </div>
+      <div class="form-row" style="margin-top:8px">
+        <span class="form-label">阅读时长</span>
+        <div class="slider-container" style="flex:1;display:flex;align-items:center;gap:10px">
+          <input type="range" class="duration-slider" id="readDuration" min="5" max="180" step="5" value="30" oninput="updateReadDurationDisplay(this.value)">
+          <span class="num" id="readDurationDisplay" style="font-size:.9rem;color:var(--green-dark);font-weight:700;min-width:60px">30分钟</span>
+        </div>
+      </div>
+      <div class="section-note">
+        <textarea id="readNote" placeholder="摘抄印象深刻的文字..." rows="2"></textarea>
+        <div class="inline-action" style="margin-top:6px">
+          <button class="inline-action-btn" onclick="addToReadingShell()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 12L2.5 8.5"/></svg>
+            放入阅读果壳
+          </button>
+        </div>
+      </div>
+      <div class="form-label" style="margin-top:10px;margin-bottom:6px">今日阅读状态</div>
+      <div class="read-status-selector" style="display:flex;justify-content:space-around;padding:8px 0">
+        <div class="read-status-option" data-status="focused" onclick="selectReadStatus(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><circle cx="24" cy="28" r="3" fill="currentColor" stroke="none"/><circle cx="40" cy="28" r="3" fill="currentColor" stroke="none"/><path d="M20 40c4 6 8 8 12 8s8-2 12-8"/><path d="M28 16l4-4 4 4"/><circle cx="32" cy="12" r="2" fill="currentColor"/></svg>
+          <span class="read-status-label">全神贯注</span>
+        </div>
+        <div class="read-status-option" data-status="distracted" onclick="selectReadStatus(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><circle cx="24" cy="28" r="3" fill="currentColor" stroke="none"/><circle cx="40" cy="28" r="3" fill="currentColor" stroke="none"/><path d="M22 40c3 3 6 4 10 4s7-1 10-4"/><path d="M18 20l4 2"/><path d="M46 20l-4 2"/></svg>
+          <span class="read-status-label">有点分心</span>
+        </div>
+        <div class="read-status-option" data-status="wandering" onclick="selectReadStatus(this)">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="26" stroke-dasharray="4 2"/><path d="M20 26c2-4 6-4 8 0"/><path d="M36 26c2-4 6-4 8 0"/><path d="M24 44c2-4 6-6 8-6s6 2 8 6"/><circle cx="16" cy="18" r="2" fill="currentColor"/><circle cx="48" cy="18" r="2" fill="currentColor"/></svg>
+          <span class="read-status-label">非常走神</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 今日电影/追剧 -->
+  <div class="section-card" id="sectionMovie">
+    <div class="section-header" onclick="toggleSection('sectionMovie')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="40" height="28" rx="4" stroke-dasharray="4 2"/><path d="M12 18l8 6-8 6V18z" stroke-dasharray="3 2"/><line x1="28" y1="20" x2="36" y2="20" stroke-dasharray="2 2"/><line x1="28" y1="26" x2="36" y2="26" stroke-dasharray="2 2"/></svg>
+      <span class="section-title">今日电影 / 追剧</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-row"><input type="text" class="form-input" id="movieTitle" placeholder="电影/剧集名称" style="flex:1"></div>
+      <div class="inline-action">
+        <button class="inline-action-btn" onclick="addToMovieList()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          加入已阅片单
+        </button>
+      </div>
+      <div class="form-row" style="margin-top:8px">
+        <span class="form-label">类型</span>
+        <select class="form-input" id="movieType" style="border-bottom-style:solid;border-bottom-color:var(--green-pale)">
+          <option value="">未分类</option>
+          <option value="movie">电影</option>
+          <option value="tv">电视剧</option>
+          <option value="anime">动画</option>
+          <option value="documentary">纪录片</option>
+          <option value="variety">综艺</option>
+        </select>
+      </div>
+      <div class="section-note"><textarea id="movieSummary" placeholder="一句话评价..." rows="1"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 8. 今日运动量 -->
+  <div class="section-card" id="sectionWalk">
+    <div class="section-header" onclick="toggleSection('sectionWalk')">
+      <svg class="section-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="12" r="6" stroke-dasharray="3 2"/><path d="M24 20v8" stroke-dasharray="3 2"/><path d="M18 28l-4 12" stroke-dasharray="3 2"/><path d="M30 28l4 12" stroke-dasharray="3 2"/><path d="M16 36h16" stroke-dasharray="3 2"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/><circle cx="38" cy="22" r="2" fill="currentColor" stroke="none"/></svg>
+      <span class="section-title">今日运动量</span>
+      <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body">
+      <div class="form-label" style="margin-bottom:6px">今日总步行公里数</div>
+      <div class="form-row">
+        <input type="number" class="form-input num" id="walkKm" placeholder="输入公里数" step="0.1" min="0" style="max-width:130px">
+        <span style="font-family:var(--font-num);color:var(--ink-light);font-size:.88rem">km</span>
+      </div>
+      <div class="section-note"><textarea id="walkNote" placeholder="散步/通勤路线备注..." rows="1"></textarea></div>
+      <div style="margin-top:12px;border-top:1.5px dashed var(--green-pale);padding-top:12px">
+        <div class="form-label" style="margin-bottom:6px">其他运动</div>
+        <div class="form-row"><input type="text" class="form-input" id="otherExercise" placeholder="运动项目（如：瑜伽、游泳、健身...）" style="flex:1"></div>
+        <div class="form-row" style="margin-top:8px">
+          <span class="form-label">运动时长</span>
+          <div class="slider-container" style="flex:1;display:flex;align-items:center;gap:10px">
+            <input type="range" class="duration-slider" id="exerciseDuration" min="5" max="120" step="5" value="30" oninput="updateExerciseDurationDisplay(this.value)">
+            <span class="num" id="exerciseDurationDisplay" style="font-size:.9rem;color:var(--green-dark);font-weight:700;min-width:60px">30分钟</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 自定义类目 -->
+  <div id="customSections"></div>
+  <button class="add-custom-btn" onclick="addCustomSection()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    添加自定义类目
+  </button>
+
+</main>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav">
+  <button class="nav-item active" id="navToday" onclick="goToToday()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>今日</span>
+  </button>
+  <button class="nav-item" id="navHistory" onclick="showHistory()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>历史</span>
+  </button>
+  <button class="nav-item" id="navDrawer" onclick="openDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span>我的抽屉</span>
+  </button>
+  <button class="nav-item" id="navExport" onclick="exportData()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <span>导出</span>
+  </button>
+  <button class="nav-item" id="navStats" onclick="showStats()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>统计</span>
+  </button>
+</nav>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">标题</h3>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== STATE ====================
+let currentDate = new Date();
+let currentMood = '';
+let todos = [];
+let customSections = [];
+let currentUser = null;
+
+// Daily Fixed Items (persistent across all dates)
+let dailyFixedItems = [];
+
+// Weekly Plan Items (per week)
+let weeklyPlanItems = [];
+
+// Brainstorm Items (per day)
+let brainstormItems = [];
+
+// New Plan Items (per day)
+let newPlanItems = [];
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+  loadDailyFixed();
+  updateDateDisplay();
+  renderWeekCalendar();
+  loadWeeklyPlan();
+  loadDiary();
+  loadAuth();
+  setInterval(autoSave, 5000);
+});
+
+// ==================== AUTH ====================
+function loadAuth() {
+  const saved = localStorage.getItem('infj_current_user');
+  if (saved) {
+    try { currentUser = JSON.parse(saved); } catch(e) {}
+  }
+  updateAuthUI();
+}
+function updateAuthUI() {
+  const registerBtn = document.getElementById('registerBtn');
+  const loginBtn = document.getElementById('loginBtn');
+  const userDisplay = document.getElementById('userDisplay');
+  const logoutBtn = document.getElementById('logoutBtn');
+  
+  if (currentUser) {
+    registerBtn.style.display = 'none';
+    loginBtn.style.display = 'none';
+    userDisplay.style.display = 'inline-block';
+    userDisplay.textContent = currentUser.nickname;
+    logoutBtn.style.display = 'inline-block';
+  } else {
+    registerBtn.style.display = 'flex';
+    loginBtn.style.display = 'flex';
+    userDisplay.style.display = 'none';
+    userDisplay.textContent = '';
+    logoutBtn.style.display = 'none';
+  }
+}
+function showRegisterModal() {
+  openModal('注册账号', `
+    <div style="padding:10px 0">
+      <div style="margin-bottom:12px">
+        <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">昵称</label>
+        <input type="text" id="regNickname" placeholder="设置你的昵称" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">密码</label>
+        <input type="password" id="regPassword" placeholder="至少6位，需包含字母和数字" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">确认密码</label>
+        <input type="password" id="regPassword2" placeholder="再次输入密码" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+      </div>
+      <button class="save-btn" onclick="doRegister()" style="width:100%;justify-content:center">注册</button>
+    </div>
+  `);
+}
+function doRegister() {
+  const nickname = document.getElementById('regNickname').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const password2 = document.getElementById('regPassword2').value;
+  if (!nickname) { showToast('请输入昵称'); return; }
+  if (password.length < 6) { showToast('密码至少6位'); return; }
+  if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) { showToast('密码需包含字母和数字'); return; }
+  if (password !== password2) { showToast('两次密码不一致'); return; }
+  const users = JSON.parse(localStorage.getItem('infj_users') || '[]');
+  if (users.find(u => u.nickname === nickname)) { showToast('该昵称已被注册'); return; }
+  users.push({ nickname, password });
+  localStorage.setItem('infj_users', JSON.stringify(users));
+  currentUser = { nickname };
+  localStorage.setItem('infj_current_user', JSON.stringify(currentUser));
+  closeModal();
+  updateAuthUI();
+  showToast('注册成功');
+}
+function showLoginModal() {
+  openModal('登录', `
+    <div style="padding:10px 0">
+      <div style="margin-bottom:12px">
+        <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">昵称</label>
+        <input type="text" id="loginNickname" placeholder="输入你的昵称" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">密码</label>
+        <input type="password" id="loginPassword" placeholder="输入密码" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+      </div>
+      <button class="save-btn" onclick="doLogin()" style="width:100%;justify-content:center;margin-bottom:10px">登录</button>
+      <div style="text-align:center">
+        <button onclick="showResetModal()" style="background:none;border:none;color:var(--green-mid);font-size:.75rem;cursor:pointer">忘记密码？</button>
+      </div>
+    </div>
+  `);
+}
+function doLogin() {
+  const nickname = document.getElementById('loginNickname').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const users = JSON.parse(localStorage.getItem('infj_users') || '[]');
+  const user = users.find(u => u.nickname === nickname && u.password === password);
+  if (!user) { showToast('昵称或密码错误'); return; }
+  currentUser = { nickname };
+  localStorage.setItem('infj_current_user', JSON.stringify(currentUser));
+  closeModal();
+  updateAuthUI();
+  showToast('登录成功');
+}
+function showResetModal() {
+  closeModal();
+  setTimeout(() => {
+    openModal('重置密码', `
+      <div style="padding:10px 0">
+        <div style="margin-bottom:12px">
+          <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">昵称</label>
+          <input type="text" id="resetNickname" placeholder="输入你的昵称" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">新密码</label>
+          <input type="password" id="resetPassword" placeholder="至少6位，需包含字母和数字" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+        </div>
+        <div style="margin-bottom:16px">
+          <label style="display:block;font-size:.8rem;color:var(--ink-light);margin-bottom:4px">确认新密码</label>
+          <input type="password" id="resetPassword2" placeholder="再次输入新密码" style="width:100%;padding:10px 12px;border:1.5px solid var(--green-pale);border-radius:8px;font-family:var(--font-cn);font-size:.9rem;outline:none">
+        </div>
+        <button class="save-btn" onclick="doReset()" style="width:100%;justify-content:center">重置密码</button>
+      </div>
+    `);
+  }, 300);
+}
+function doReset() {
+  const nickname = document.getElementById('resetNickname').value.trim();
+  const password = document.getElementById('resetPassword').value;
+  const password2 = document.getElementById('resetPassword2').value;
+  if (!nickname) { showToast('请输入昵称'); return; }
+  if (password.length < 6) { showToast('密码至少6位'); return; }
+  if (!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) { showToast('密码需包含字母和数字'); return; }
+  if (password !== password2) { showToast('两次密码不一致'); return; }
+  let users = JSON.parse(localStorage.getItem('infj_users') || '[]');
+  const idx = users.findIndex(u => u.nickname === nickname);
+  if (idx < 0) { showToast('该昵称未注册'); return; }
+  users[idx].password = password;
+  localStorage.setItem('infj_users', JSON.stringify(users));
+  closeModal();
+  showToast('密码已重置，请登录');
+}
+function logout() {
+  currentUser = null;
+  localStorage.removeItem('infj_current_user');
+  updateAuthUI();
+  showToast('已登出');
+}
+
+// ==================== DATE NAVIGATION ====================
+function formatDate(d) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+function getWeekKey(d) {
+  const startOfWeek = new Date(d);
+  startOfWeek.setDate(d.getDate() - d.getDay());
+  return `infj_weekly_${formatDate(startOfWeek)}`;
+}
+function updateDateDisplay() {
+  const days = ['周日','周一','周二','周三','周四','周五','周六'];
+  const y = currentDate.getFullYear();
+  const m = currentDate.getMonth() + 1;
+  const d = currentDate.getDate();
+  const dayName = days[currentDate.getDay()];
+  document.getElementById('dateMain').textContent = `${m}月${d}日`;
+  document.getElementById('dateSub').textContent = `${y}年 · ${dayName}`;
+}
+function renderWeekCalendar() {
+  const cal = document.getElementById('weekCalendar');
+  const startOfWeek = new Date(currentDate);
+  startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+  const labels = ['日','一','二','三','四','五','六'];
+  let html = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+    const isCurrent = d.toDateString() === currentDate.toDateString();
+    const hasData = localStorage.getItem(`diary_${formatDate(d)}`);
+    html += `<div class="week-day${isCurrent?' active':''}${hasData?' has-data':''}" onclick="selectWeekDay(${i})"><span class="wd-label">${labels[i]}</span><span class="wd-num">${d.getDate()}</span></div>`;
+  }
+  cal.innerHTML = html;
+}
+function selectWeekDay(offset) {
+  saveCurrentData();
+  currentDate.setDate(currentDate.getDate() - currentDate.getDay() + offset);
+  updateDateDisplay(); renderWeekCalendar(); loadDiary(); loadWeeklyPlan();
+}
+function changeDate(offset) {
+  saveCurrentData();
+  currentDate.setDate(currentDate.getDate() + offset);
+  updateDateDisplay(); renderWeekCalendar(); loadDiary(); loadWeeklyPlan();
+}
+function goToToday() {
+  saveCurrentData();
+  currentDate = new Date();
+  updateDateDisplay(); renderWeekCalendar(); loadDiary(); loadWeeklyPlan(); setActiveNav(0);
+}
+function saveCurrentData() {
+  const currentKey = `diary_${formatDate(currentDate)}`;
+  const data = getDiaryData();
+  localStorage.setItem(currentKey, JSON.stringify(data));
+}
+
+// ==================== SECTION TOGGLE ====================
+function toggleSection(id) { document.getElementById(id).classList.toggle('collapsed'); }
+
+// ==================== MOOD ====================
+function selectMood(el) {
+  document.querySelectorAll('.mood-option').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  currentMood = el.dataset.mood;
+  el.style.animation = 'none'; el.offsetHeight; el.style.animation = 'checkmark .4s ease';
+}
+
+// ==================== READ STATUS ====================
+let currentReadStatus = '';
+function selectReadStatus(el) {
+  document.querySelectorAll('.read-status-option').forEach(r => r.classList.remove('selected'));
+  el.classList.add('selected');
+  currentReadStatus = el.dataset.status;
+}
+function updateReadDurationDisplay(value) {
+  document.getElementById('readDurationDisplay').textContent = value + '分钟';
+}
+
+// ==================== EXERCISE DURATION ====================
+function updateExerciseDurationDisplay(value) {
+  document.getElementById('exerciseDurationDisplay').textContent = value + '分钟';
+}
+
+// ==================== READING SHELL ====================
+function addToReadingShell() {
+  const text = document.getElementById('readNote').value.trim();
+  const bookTitle = document.getElementById('bookTitle').value.trim();
+  if (!text) { showToast('请先写下摘抄内容'); return; }
+  const drawer = getDrawerData();
+  if (!drawer.readingFruits) drawer.readingFruits = [];
+  const fullText = bookTitle ? text + ' ——' + bookTitle : text;
+  drawer.readingFruits.unshift({ id: Date.now(), date: formatDate(currentDate), text: fullText });
+  saveDrawerData(drawer);
+  showToast('已放入阅读果壳');
+}
+
+// ==================== SLEEP ====================
+function autoCalcSleep() {
+  const s = document.getElementById('sleepTime').value, w = document.getElementById('wakeTime').value;
+  if (s && w) {
+    const [sh,sm] = s.split(':').map(Number), [wh,wm] = w.split(':').map(Number);
+    let sMin = sh*60+sm, wMin = wh*60+wm;
+    if (wMin <= sMin) wMin += 24*60;
+    const diff = wMin - sMin, h = Math.floor(diff/60), m = diff%60;
+    document.getElementById('sleepDuration').textContent = `${h} 小时${m > 0 ? ' '+m+' 分' : ''}`;
+  } else { document.getElementById('sleepDuration').textContent = '--'; }
+}
+
+// ==================== DAILY FIXED (Persistent) ====================
+function loadDailyFixed() {
+  const saved = localStorage.getItem('infj_daily_fixed_items');
+  if (saved) {
+    try { dailyFixedItems = JSON.parse(saved); } catch(e) { dailyFixedItems = []; }
+  }
+  renderDailyFixed();
+}
+function saveDailyFixed() {
+  localStorage.setItem('infj_daily_fixed_items', JSON.stringify(dailyFixedItems));
+}
+function addDailyFixed() {
+  const input = document.getElementById('dailyFixedInput');
+  const text = input.value.trim();
+  if (!text) return;
+  dailyFixedItems.push({ id: Date.now(), text });
+  input.value = '';
+  renderDailyFixed();
+  saveDailyFixed();
+}
+function deleteDailyFixed(id) {
+  dailyFixedItems = dailyFixedItems.filter(item => item.id !== id);
+  renderDailyFixed();
+  saveDailyFixed();
+}
+function renderDailyFixed() {
+  const list = document.getElementById('dailyFixedList');
+  const empty = document.getElementById('dailyFixedEmpty');
+  if (!dailyFixedItems.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = dailyFixedItems.map(item => `<li class="item-item">
+    <span class="item-text">${escapeHtml(item.text)}</span>
+    <button class="item-delete" onclick="deleteDailyFixed(${item.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </li>`).join('');
+}
+
+// ==================== WEEKLY PLAN (Per Week) ====================
+function loadWeeklyPlan() {
+  const key = getWeekKey(currentDate);
+  const saved = localStorage.getItem(key);
+  if (saved) {
+    try { weeklyPlanItems = JSON.parse(saved); } catch(e) { weeklyPlanItems = []; }
+  } else {
+    weeklyPlanItems = [];
+  }
+  renderWeeklyPlan();
+}
+function saveWeeklyPlan() {
+  const key = getWeekKey(currentDate);
+  localStorage.setItem(key, JSON.stringify(weeklyPlanItems));
+}
+function addWeeklyPlanItem() {
+  const input = document.getElementById('weeklyPlanInput');
+  const text = input.value.trim();
+  if (!text) return;
+  weeklyPlanItems.push({ id: Date.now(), text });
+  input.value = '';
+  renderWeeklyPlan();
+  saveWeeklyPlan();
+}
+function deleteWeeklyPlanItem(id) {
+  weeklyPlanItems = weeklyPlanItems.filter(item => item.id !== id);
+  renderWeeklyPlan();
+  saveWeeklyPlan();
+}
+function renderWeeklyPlan() {
+  const list = document.getElementById('weeklyPlanList');
+  const empty = document.getElementById('weeklyPlanEmpty');
+  if (!weeklyPlanItems.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = weeklyPlanItems.map(item => `<li class="item-item">
+    <span class="item-text">${escapeHtml(item.text)}</span>
+    <button class="item-delete" onclick="deleteWeeklyPlanItem(${item.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </li>`).join('');
+}
+function carryWeeklyPlanToNextWeek() {
+  if (!weeklyPlanItems.length) { showToast('本周没有计划可延续'); return; }
+  const nextWeekDate = new Date(currentDate);
+  nextWeekDate.setDate(currentDate.getDate() + 7);
+  const nextWeekKey = getWeekKey(nextWeekDate);
+  localStorage.setItem(nextWeekKey, JSON.stringify(weeklyPlanItems));
+  showToast('本周计划已延续到下周');
+}
+
+// ==================== BRAINSTORM (Per Day) ====================
+function addBrainstorm() {
+  const input = document.getElementById('brainstormInput');
+  const text = input.value.trim();
+  if (!text) return;
+  brainstormItems.push({ id: Date.now(), text });
+  input.value = '';
+  renderBrainstorm();
+}
+function deleteBrainstorm(id) {
+  brainstormItems = brainstormItems.filter(item => item.id !== id);
+  renderBrainstorm();
+}
+function renderBrainstorm() {
+  const list = document.getElementById('brainstormList');
+  const empty = document.getElementById('brainstormEmpty');
+  if (!brainstormItems.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = brainstormItems.map(item => `<li class="item-item">
+    <span class="item-text">${escapeHtml(item.text)}</span>
+    <button class="item-delete" onclick="deleteBrainstorm(${item.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </li>`).join('');
+}
+
+// ==================== NEW PLAN (Per Day) ====================
+function addNewPlan() {
+  const input = document.getElementById('newPlanInput');
+  const text = input.value.trim();
+  if (!text) return;
+  newPlanItems.push({ id: Date.now(), text });
+  input.value = '';
+  renderNewPlan();
+}
+function deleteNewPlan(id) {
+  newPlanItems = newPlanItems.filter(item => item.id !== id);
+  renderNewPlan();
+}
+function renderNewPlan() {
+  const list = document.getElementById('newPlanList');
+  const empty = document.getElementById('newPlanEmpty');
+  if (!newPlanItems.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = newPlanItems.map(item => `<li class="item-item">
+    <span class="item-text">${escapeHtml(item.text)}</span>
+    <button class="item-delete" onclick="deleteNewPlan(${item.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </li>`).join('');
+}
+
+// ==================== TODO ====================
+function addTodo() {
+  const input = document.getElementById('todoInput');
+  const text = input.value.trim();
+  if (!text) return;
+  todos.push({ id: Date.now(), text, done: false });
+  input.value = ''; renderTodos();
+}
+function toggleTodo(id) {
+  const t = todos.find(t => t.id === id);
+  if (t) { t.done = !t.done; renderTodos(); if (t.done) showToast('完成一项！'); }
+}
+function deleteTodo(id) { todos = todos.filter(t => t.id !== id); renderTodos(); }
+function renderTodos() {
+  const list = document.getElementById('todoList'), empty = document.getElementById('todoEmpty');
+  if (!todos.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = todos.map(t => `<li class="item-item${t.done?' done':''}">
+    <div class="todo-checkbox${t.done?' checked':''}" onclick="toggleTodo(${t.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <span class="item-text">${escapeHtml(t.text)}</span>
+    <button class="item-delete" onclick="deleteTodo(${t.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </li>`).join('');
+}
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// ==================== CUSTOM SECTIONS ====================
+function addCustomSection() {
+  const id = Date.now();
+  customSections.push({ id, name:'', content:'', note:'' });
+  renderCustomSections();
+  setTimeout(() => { const i = document.querySelector(`[data-cid="${id}"] .cn-input`); if(i) i.focus(); }, 100);
+}
+function removeCustomSection(id) { customSections = customSections.filter(s => s.id !== id); renderCustomSections(); }
+function renderCustomSections() {
+  document.getElementById('customSections').innerHTML = customSections.map(s => `
+    <div class="custom-section-card" data-cid="${s.id}">
+      <div class="custom-header">
+        <svg width="22" height="22" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;color:var(--green-mid)"><rect x="8" y="8" width="32" height="32" rx="4" stroke-dasharray="4 2"/><path d="M18 18h12" stroke-dasharray="2 2"/><path d="M18 24h12" stroke-dasharray="2 2"/></svg>
+        <input class="cn-input" type="text" value="${escapeHtml(s.name)}" placeholder="输入类目名称..." oninput="updateCustom(${s.id},'name',this.value)">
+        <button class="custom-delete-btn" onclick="removeCustomSection(${s.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="custom-body">
+        <textarea class="form-input" placeholder="记录内容..." rows="3" oninput="updateCustom(${s.id},'content',this.value)">${escapeHtml(s.content)}</textarea>
+        <div class="section-note"><textarea placeholder="一句话备注..." rows="1" oninput="updateCustom(${s.id},'note',this.value)">${escapeHtml(s.note)}</textarea></div>
+      </div>
+    </div>`).join('');
+}
+function updateCustom(id, f, v) { const s = customSections.find(s => s.id === id); if(s) s[f] = v; }
+
+// ==================== INSPIRATION BOX ====================
+function addToInspirationBox() {
+  const text = document.getElementById('brainstormNote').value.trim();
+  if (!text) { showToast('请先写下灵感内容'); return; }
+  const drawer = getDrawerData();
+  if (!drawer.inspirations) drawer.inspirations = [];
+  drawer.inspirations.unshift({ id: Date.now(), date: formatDate(currentDate), text });
+  saveDrawerData(drawer);
+  showToast('已加入灵感盒子');
+}
+
+// ==================== PLAN STICKY ====================
+function addToPlanSticky() {
+  const text = document.getElementById('planNote').value.trim();
+  if (!text) { showToast('请先写下计划内容'); return; }
+  const priority = document.getElementById('planPriority').value;
+  const drawer = getDrawerData();
+  if (!drawer.plans) drawer.plans = [];
+  drawer.plans.unshift({ id: Date.now(), date: formatDate(currentDate), text, priority });
+  saveDrawerData(drawer);
+  showToast('已加入计划便箴');
+}
+
+// ==================== DREAMS ====================
+function collectDreamToHistory() {
+  const text = document.getElementById('dreamText').value.trim();
+  const type = document.getElementById('dreamType').value;
+  if (!text) return;
+  const drawer = getDrawerData();
+  if (!drawer.dreams) drawer.dreams = [];
+  const dateKey = formatDate(currentDate);
+  const existing = drawer.dreams.findIndex(d => d.date === dateKey);
+  if (existing >= 0) drawer.dreams.splice(existing, 1);
+  drawer.dreams.unshift({ id: Date.now(), date: dateKey, text, type });
+  saveDrawerData(drawer);
+}
+function addToDreamDrawer() {
+  const text = document.getElementById('dreamText').value.trim();
+  if (!text) { showToast('请先写下梦境内容'); return; }
+  const type = document.getElementById('dreamType').value;
+  const drawer = getDrawerData();
+  if (!drawer.dreams) drawer.dreams = [];
+  const dateKey = formatDate(currentDate);
+  const existing = drawer.dreams.findIndex(d => d.date === dateKey);
+  if (existing >= 0) drawer.dreams.splice(existing, 1);
+  drawer.dreams.unshift({ id: Date.now(), date: dateKey, text, type });
+  saveDrawerData(drawer);
+  showToast('已加入梦境抽屉');
+}
+
+// ==================== MOVIE LIST ====================
+function addToMovieList() {
+  const text = document.getElementById('movieTitle').value.trim();
+  if (!text) { showToast('请先填写影片名称'); return; }
+  const type = document.getElementById('movieType').value;
+  const drawer = getDrawerData();
+  if (!drawer.movies) drawer.movies = [];
+  drawer.movies.unshift({ id: Date.now(), date: formatDate(currentDate), text, type });
+  saveDrawerData(drawer);
+  showToast('已加入已阅片单');
+}
+
+// ==================== BOOK LIST ====================
+function addToBookList() {
+  const text = document.getElementById('bookTitle').value.trim();
+  if (!text) { showToast('请先填写书名'); return; }
+  const duration = document.getElementById('readDuration').value;
+  const drawer = getDrawerData();
+  if (!drawer.books) drawer.books = [];
+  drawer.books.unshift({ id: Date.now(), date: formatDate(currentDate), text, duration });
+  saveDrawerData(drawer);
+  showToast('已加入已阅书单');
+}
+
+// ==================== DRAWER ====================
+let currentDrawerTab = 'dreams';
+function getDrawerData() {
+  const saved = localStorage.getItem('infj_drawer');
+  if (saved) {
+    try { return JSON.parse(saved); } catch(e) {}
+  }
+  return { dreams: [], inspirations: [], plans: [], weeklyPlans: [], movies: [], books: [], readingFruits: [] };
+}
+function saveDrawerData(data) { localStorage.setItem('infj_drawer', JSON.stringify(data)); }
+function openDrawer() {
+  setActiveNav(2);
+  openModal('我的抽屉', `
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" id="dtDreams" onclick="switchDrawerTab('dreams')">历史梦境</button>
+      <button class="drawer-tab" id="dtInsp" onclick="switchDrawerTab('inspirations')">灵感盒子</button>
+      <button class="drawer-tab" id="dtPlans" onclick="switchDrawerTab('plans')">计划便箴</button>
+      <button class="drawer-tab" id="dtWeekly" onclick="switchDrawerTab('weeklyPlans')">历史每周计划</button>
+      <button class="drawer-tab" id="dtMovies" onclick="switchDrawerTab('movies')">历史已阅影片</button>
+      <button class="drawer-tab" id="dtBooks" onclick="switchDrawerTab('books')">历史已阅书单</button>
+      <button class="drawer-tab" id="dtReading" onclick="switchDrawerTab('readingFruits')">阅读果实</button>
+    </div>
+    <div class="drawer-content" id="drawerContent"></div>
+  `);
+  renderDrawer();
+}
+function switchDrawerTab(tab) {
+  currentDrawerTab = tab;
+  document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+  const idMap = { dreams:'dtDreams', inspirations:'dtInsp', plans:'dtPlans', weeklyPlans:'dtWeekly', movies:'dtMovies', books:'dtBooks', readingFruits:'dtReading' };
+  document.getElementById(idMap[tab]).classList.add('active');
+  renderDrawer();
+}
+function renderDrawer() {
+  const container = document.getElementById('drawerContent');
+  const drawer = getDrawerData();
+  if (currentDrawerTab === 'dreams') {
+    const items = (drawer.dreams || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无历史梦境</div>'; return; }
+    const dreamTypeLabels = { good:'美梦', bad:'噩梦', weird:'怪梦', lucid:'清醒梦', recurring:'重复梦' };
+    container.innerHTML = items.map(d => `<div class="drawer-item">
+      <div class="drawer-item-date num">${d.date}${d.type ? ' · '+(dreamTypeLabels[d.type]||d.type) : ''}</div>
+      <div class="drawer-item-text">${escapeHtml(d.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('dreams',${d.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'inspirations') {
+    const items = (drawer.inspirations || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无灵感记录</div>'; return; }
+    container.innerHTML = items.map(i => `<div class="drawer-item">
+      <div class="drawer-item-date num">${i.date}</div>
+      <div class="drawer-item-text">${escapeHtml(i.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('inspirations',${i.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'plans') {
+    const items = (drawer.plans || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无计划便箴</div>'; return; }
+    const priorityLabels = { high:'紧急重要', medium:'重要不紧急', low:'有空再做' };
+    container.innerHTML = items.map(p => `<div class="drawer-item">
+      <div class="drawer-item-date num">${p.date}${p.priority ? ' · '+(priorityLabels[p.priority]||p.priority) : ''}</div>
+      <div class="drawer-item-text">${escapeHtml(p.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('plans',${p.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'weeklyPlans') {
+    const items = (drawer.weeklyPlans || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无历史每周计划</div>'; return; }
+    container.innerHTML = items.map(w => `<div class="drawer-item">
+      <div class="drawer-item-date num">${w.dateRange}</div>
+      <div class="drawer-item-text">${escapeHtml(w.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('weeklyPlans',${w.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'movies') {
+    const items = (drawer.movies || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无已阅影片</div>'; return; }
+    const movieTypeLabels = { movie:'电影', tv:'电视剧', anime:'动画', documentary:'纪录片', variety:'综艺' };
+    container.innerHTML = items.map(m => `<div class="drawer-item">
+      <div class="drawer-item-date num">${m.date}${m.type ? ' · '+movieTypeLabels[m.type] : ''}</div>
+      <div class="drawer-item-text">${escapeHtml(m.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('movies',${m.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'books') {
+    const items = (drawer.books || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无已阅书单</div>'; return; }
+    container.innerHTML = items.map(b => `<div class="drawer-item">
+      <div class="drawer-item-date num">${b.date}${b.duration ? ' · '+b.duration+'分钟' : ''}</div>
+      <div class="drawer-item-text">${escapeHtml(b.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('books',${b.id})">删除</button></div>
+    </div>`).join('');
+  } else if (currentDrawerTab === 'readingFruits') {
+    const items = (drawer.readingFruits || []).sort((a,b) => (b.id - a.id));
+    if (!items.length) { container.innerHTML = '<div class="drawer-empty">暂无阅读果实</div>'; return; }
+    container.innerHTML = items.map(r => `<div class="drawer-item">
+      <div class="drawer-item-date num">${r.date}</div>
+      <div class="drawer-item-text">${escapeHtml(r.text)}</div>
+      <div class="drawer-item-actions"><button onclick="removeDrawerItem('readingFruits',${r.id})">删除</button></div>
+    </div>`).join('');
+  }
+}
+function removeDrawerItem(type, id) {
+  const drawer = getDrawerData();
+  if (drawer[type]) drawer[type] = drawer[type].filter(i => i.id !== id);
+  saveDrawerData(drawer);
+  renderDrawer();
+}
+
+// ==================== SAVE / LOAD ====================
+function getDiaryData() {
+  return {
+    date: formatDate(currentDate),
+    sleepTime: document.getElementById('sleepTime').value,
+    wakeTime: document.getElementById('wakeTime').value,
+    dreamText: document.getElementById('dreamText').value,
+    dreamType: document.getElementById('dreamType').value,
+    weight: document.getElementById('weight').value,
+    weightNote: document.getElementById('weightNote').value,
+    todos: todos,
+    brainstormItems: brainstormItems,
+    brainstormNote: document.getElementById('brainstormNote').value,
+    newPlanItems: newPlanItems,
+    planPriority: document.getElementById('planPriority').value,
+    planNote: document.getElementById('planNote').value,
+    mood: currentMood,
+    moodNote: document.getElementById('moodNote').value,
+    bookTitle: document.getElementById('bookTitle').value,
+    readDuration: document.getElementById('readDuration').value,
+    readNote: document.getElementById('readNote').value,
+    readStatus: currentReadStatus,
+    movieTitle: document.getElementById('movieTitle').value,
+    movieType: document.getElementById('movieType').value,
+    movieSummary: document.getElementById('movieSummary').value,
+    walkKm: document.getElementById('walkKm').value,
+    walkNote: document.getElementById('walkNote').value,
+    otherExercise: document.getElementById('otherExercise').value,
+    exerciseDuration: document.getElementById('exerciseDuration').value,
+    sleepNote: document.getElementById('sleepNote').value,
+    customSections: customSections
+  };
+}
+function saveDiary() {
+  const key = `diary_${formatDate(currentDate)}`;
+  const data = getDiaryData();
+  localStorage.setItem(key, JSON.stringify(data));
+  collectDreamToHistory();
+  const btn = document.getElementById('saveBtn');
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>已保存';
+  btn.classList.add('saved');
+  setTimeout(() => { btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>保存'; btn.classList.remove('saved'); }, 2000);
+  renderWeekCalendar();
+}
+function autoSave() { saveDiary(); }
+function loadDiary() {
+  const key = `diary_${formatDate(currentDate)}`;
+  const saved = localStorage.getItem(key);
+  if (saved) {
+    try {
+      const d = JSON.parse(saved);
+      document.getElementById('sleepTime').value = d.sleepTime || '';
+      document.getElementById('wakeTime').value = d.wakeTime || '';
+      autoCalcSleep();
+      document.getElementById('dreamText').value = d.dreamText || '';
+      document.getElementById('dreamType').value = d.dreamType || '';
+      document.getElementById('weight').value = d.weight || '';
+      document.getElementById('weightNote').value = d.weightNote || '';
+      todos = d.todos || [];
+      renderTodos();
+      brainstormItems = d.brainstormItems || [];
+      renderBrainstorm();
+      document.getElementById('brainstormNote').value = d.brainstormNote || '';
+      newPlanItems = d.newPlanItems || [];
+      renderNewPlan();
+      document.getElementById('planPriority').value = d.planPriority || '';
+      document.getElementById('planNote').value = d.planNote || '';
+      currentMood = d.mood || '';
+      document.querySelectorAll('.mood-option').forEach(m => m.classList.toggle('selected', m.dataset.mood === currentMood));
+      document.getElementById('moodNote').value = d.moodNote || '';
+      document.getElementById('bookTitle').value = d.bookTitle || '';
+      document.getElementById('readDuration').value = d.readDuration || '30';
+      updateReadDurationDisplay(d.readDuration || '30');
+      document.getElementById('readNote').value = d.readNote || '';
+      currentReadStatus = d.readStatus || '';
+      document.querySelectorAll('.read-status-option').forEach(r => r.classList.toggle('selected', r.dataset.status === currentReadStatus));
+      document.getElementById('movieTitle').value = d.movieTitle || '';
+      document.getElementById('movieType').value = d.movieType || '';
+      document.getElementById('movieSummary').value = d.movieSummary || '';
+      document.getElementById('walkKm').value = d.walkKm || '';
+      document.getElementById('walkNote').value = d.walkNote || '';
+      document.getElementById('otherExercise').value = d.otherExercise || '';
+      document.getElementById('exerciseDuration').value = d.exerciseDuration || '30';
+      updateExerciseDurationDisplay(d.exerciseDuration || '30');
+      document.getElementById('sleepNote').value = d.sleepNote || '';
+      customSections = d.customSections || [];
+      renderCustomSections();
+      return;
+    } catch(e) {}
+  }
+  document.getElementById('sleepTime').value = '';
+  document.getElementById('wakeTime').value = '';
+  autoCalcSleep();
+  document.getElementById('dreamText').value = '';
+  document.getElementById('dreamType').value = '';
+  document.getElementById('weight').value = '';
+  document.getElementById('weightNote').value = '';
+  todos = [];
+  renderTodos();
+  brainstormItems = [];
+  renderBrainstorm();
+  document.getElementById('brainstormNote').value = '';
+  newPlanItems = [];
+  renderNewPlan();
+  document.getElementById('planPriority').value = '';
+  document.getElementById('planNote').value = '';
+  currentMood = '';
+  document.querySelectorAll('.mood-option').forEach(m => m.classList.remove('selected'));
+  document.getElementById('moodNote').value = '';
+  document.getElementById('bookTitle').value = '';
+  document.getElementById('readDuration').value = '30';
+  updateReadDurationDisplay('30');
+  document.getElementById('readNote').value = '';
+  currentReadStatus = '';
+  document.querySelectorAll('.read-status-option').forEach(r => r.classList.remove('selected'));
+  document.getElementById('movieTitle').value = '';
+  document.getElementById('movieType').value = '';
+  document.getElementById('movieSummary').value = '';
+  document.getElementById('walkKm').value = '';
+  document.getElementById('walkNote').value = '';
+  document.getElementById('otherExercise').value = '';
+  document.getElementById('exerciseDuration').value = '30';
+  updateExerciseDurationDisplay('30');
+  document.getElementById('sleepNote').value = '';
+  customSections = [];
+  renderCustomSections();
+}
+
+// ==================== EXPORT / STATS / HISTORY ====================
+function exportData() {
+  setActiveNav(3);
+  openModal('数据管理', `
+    <div style="padding:10px 0">
+      <div style="margin-bottom:16px">
+        <div style="font-size:.9rem;font-weight:700;color:var(--green-dark);margin-bottom:8px">导出数据</div>
+        <p style="font-size:.78rem;color:var(--ink-light);margin-bottom:10px">将所有数据导出为JSON文件，可用于跨设备迁移</p>
+        <button class="save-btn" onclick="doExportJSON()" style="width:100%;justify-content:center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出JSON备份
+        </button>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:.9rem;font-weight:700;color:var(--green-dark);margin-bottom:8px">导出文本</div>
+        <button class="save-btn" onclick="doExportText()" style="width:100%;justify-content:center;background:var(--green-mid)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          导出TXT文本
+        </button>
+      </div>
+      <div style="border-top:1px dashed var(--green-ghost);padding-top:16px">
+        <div style="font-size:.9rem;font-weight:700;color:var(--green-dark);margin-bottom:8px">导入数据</div>
+        <p style="font-size:.78rem;color:var(--ink-light);margin-bottom:10px">从JSON备份文件恢复数据（将覆盖同名日期的数据）</p>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="doImportJSON(event)">
+        <button class="save-btn" onclick="document.getElementById('importFile').click()" style="width:100%;justify-content:center;background:var(--green-light)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          导入JSON备份
+        </button>
+      </div>
+    </div>
+  `);
+}
+function doExportJSON() {
+  const data = { version: 1, exportedAt: new Date().toISOString(), diaries: {}, drawer: getDrawerData(), dailyFixed: localStorage.getItem('infj_daily_fixed') || '', dailyFixedItems: dailyFixedItems };
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('diary_')) { data.diaries[k.replace('diary_','')] = JSON.parse(localStorage.getItem(k)); }
+    else if (k.startsWith('infj_weekly_')) { if (!data.weeklyPlans) data.weeklyPlans = {}; data.weeklyPlans[k] = localStorage.getItem(k); }
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'INFJ精神手帐_'+formatDate(new Date())+'.json';
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast('JSON备份已导出');
+}
+function doExportText() {
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if(k.startsWith('diary_')) keys.push(k); }
+  keys.sort();
+  if (!keys.length) { showToast('没有数据'); return; }
+  const moodLabel = { great:'超棒', good:'不错', okay:'一般', low:'低落', bad:'糟糕' };
+  let text = '=== INFJ的精神手帳 数据导出 ===\n导出时间：'+new Date().toLocaleString('zh-CN')+'\n共 '+keys.length+' 条记录\n\n';
+  keys.forEach(key => {
+    try {
+      const d = JSON.parse(localStorage.getItem(key));
+      text += '--- '+d.date+' ---\n';
+      const dfItems = localStorage.getItem('infj_daily_fixed_items');
+      if(dfItems) {
+        const items = JSON.parse(dfItems);
+        if(items.length) { text += '  每日固定事项：\n'; items.forEach(item=>{text+='    - '+item.text+'\n';}); }
+      }
+      const wkKey = getWeekKey(new Date(key.replace('diary_','')));
+      const wkItems = localStorage.getItem(wkKey);
+      if(wkItems) {
+        const items = JSON.parse(wkItems);
+        if(items.length) { text += '  本周计划：\n'; items.forEach(item=>{text+='    - '+item.text+'\n';}); }
+      }
+      if(d.sleepTime||d.wakeTime) text += '  入睡：'+(d.sleepTime||'-')+'  起床：'+(d.wakeTime||'-')+'\n';
+      if(d.dreamText) text += '  梦境：'+d.dreamText+'\n';
+      if(d.weight) text += '  体重：'+d.weight+'kg\n';
+      if(d.todos&&d.todos.length){text+='  必做事项：\n';d.todos.forEach(t=>{text+='    '+(t.done?'[x]':'[ ]')+' '+t.text+'\n';});}
+      if(d.brainstormItems&&d.brainstormItems.length){text+='  头脑风暴：\n';d.brainstormItems.forEach(item=>{text+='    - '+item.text+'\n';});}
+      if(d.newPlanItems&&d.newPlanItems.length){text+='  新增计划：\n';d.newPlanItems.forEach(item=>{text+='    - '+item.text+'\n';});}
+      const m = d.mood || (d.moods ? (d.moods.morning||d.moods.afternoon||d.moods.night) : '');
+      if(m) text += '  心情：'+(moodLabel[m]||m)+'\n';
+      if(d.bookTitle) text += '  阅读：'+d.bookTitle+(d.readDuration?' ('+d.readDuration+'分钟)':'')+'\n';
+      const readStatusLabels = { focused:'全神贯注', distracted:'有点分心', wandering:'非常走神' };
+      if(d.readStatus) text += '  阅读状态：'+(readStatusLabels[d.readStatus]||d.readStatus)+'\n';
+      if(d.movieTitle) text += '  影视：'+d.movieTitle+'\n';
+      if(d.walkKm) text += '  步行：'+d.walkKm+'km\n';
+      if(d.otherExercise) text += '  其他运动：'+d.otherExercise+(d.exerciseDuration?' ('+d.exerciseDuration+'分钟)':'')+'\n';
+      text += '\n';
+    } catch(e) {}
+  });
+  const blob = new Blob([text],{type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'INFJ精神手帐_'+formatDate(new Date())+'.txt';
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast('数据已导出');
+}
+function doImportJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const data = JSON.parse(event.target.result);
+      if (data.diaries) {
+        Object.entries(data.diaries).forEach(([date, diary]) => {
+          localStorage.setItem(`diary_${date}`, JSON.stringify(diary));
+        });
+      }
+      if (data.weeklyPlans) {
+        Object.entries(data.weeklyPlans).forEach(([key, plan]) => {
+          localStorage.setItem(key, plan);
+        });
+      }
+      if (data.dailyFixed) localStorage.setItem('infj_daily_fixed', data.dailyFixed);
+      if (data.dailyFixedItems) {
+        dailyFixedItems = data.dailyFixedItems;
+        localStorage.setItem('infj_daily_fixed_items', JSON.stringify(dailyFixedItems));
+        renderDailyFixed();
+      }
+      if (data.drawer) saveDrawerData(data.drawer);
+      loadDiary();
+      loadWeeklyPlan();
+      showToast('数据导入成功');
+    } catch(err) {
+      showToast('导入失败：文件格式错误');
+    }
+  };
+  reader.readAsText(file);
+}
+function saveWeeklyPlanToHistory() {
+  if (!weeklyPlanItems.length) { showToast('本周计划为空'); return; }
+  const drawer = getDrawerData();
+  if (!drawer.weeklyPlans) drawer.weeklyPlans = [];
+  const startOfWeek = new Date(currentDate);
+  startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  const range = `${formatDate(startOfWeek)} ~ ${formatDate(endOfWeek)}`;
+  const text = weeklyPlanItems.map(item => item.text).join('\n');
+  drawer.weeklyPlans.unshift({ id: Date.now(), dateRange: range, text });
+  saveDrawerData(drawer);
+  showToast('已放入历史计划');
+}
+function showHistory() {
+  setActiveNav(1);
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if(k.startsWith('diary_')) keys.push(k.replace('diary_','')); }
+  keys.sort().reverse();
+  if (!keys.length) { openModal('历史记录', '<div style="padding:20px;text-align:center;color:var(--ink-light)">暂无记录</div>'); return; }
+  const list = keys.map(k => {
+    const d = new Date(k);
+    const days = ['周日','周一','周二','周三','周四','周五','周六'];
+    const dayName = days[d.getDay()];
+    return `<div style="padding:10px 0;border-bottom:1px dashed var(--green-ghost);cursor:pointer" onclick="jumpToDate('${k}')">
+      <div style="font-size:.9rem;color:var(--green-dark);font-weight:700">${k} · ${dayName}</div>
+    </div>`;
+  }).join('');
+  openModal('历史记录 ('+keys.length+'条)', '<div style="max-height:60vh;overflow-y:auto">'+list+'</div>');
+}
+function jumpToDate(dateStr) {
+  closeModal();
+  currentDate = new Date(dateStr);
+  updateDateDisplay(); renderWeekCalendar(); loadDiary(); loadWeeklyPlan();
+}
+function showStats() {
+  setActiveNav(4);
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if(k.startsWith('diary_')) keys.push(k); }
+  let totalEntries = keys.length, totalTodos = 0, doneTodos = 0, totalBooks = 0, totalMovies = 0, totalWalk = 0;
+  keys.forEach(key => {
+    try {
+      const d = JSON.parse(localStorage.getItem(key));
+      if (d.todos) { totalTodos += d.todos.length; doneTodos += d.todos.filter(t=>t.done).length; }
+      if (d.bookTitle) totalBooks++;
+      if (d.movieTitle) totalMovies++;
+      if (d.walkKm) totalWalk += parseFloat(d.walkKm);
+    } catch(e) {}
+  });
+  const drawer = getDrawerData();
+  openModal('数据统计', `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value num">${totalEntries}</div><div class="stat-label">记录天数</div></div>
+      <div class="stat-card"><div class="stat-value num">${doneTodos}/${totalTodos}</div><div class="stat-label">完成事项</div></div>
+      <div class="stat-card"><div class="stat-value num">${totalBooks}</div><div class="stat-label">阅读书籍</div></div>
+      <div class="stat-card"><div class="stat-value num">${totalMovies}</div><div class="stat-label">观影记录</div></div>
+      <div class="stat-card"><div class="stat-value num">${totalWalk.toFixed(1)}</div><div class="stat-label">总步行(km)</div></div>
+      <div class="stat-card"><div class="stat-value num">${(drawer.inspirations||[]).length}</div><div class="stat-label">灵感收集</div></div>
+    </div>
+  `);
+}
+
+// ==================== MODAL ====================
+function openModal(title, html) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e) { if(e.target===document.getElementById('modalOverlay')) closeModal(); }
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ==================== NAV ====================
+function setActiveNav(idx) {
+  document.querySelectorAll('.nav-item').forEach((n,i) => n.classList.toggle('active', i===idx));
+}
+</script>
+</body>
+</html>
